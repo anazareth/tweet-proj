@@ -5,9 +5,11 @@ import numpy as np
 
 def main():
     consumer_key, consumer_secret, access_token, access_secret = get_tokens()
+    # init connection with authentication parameters
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
+    # define user we want to get tweets from
     target_username = 'JustinTrudeau'
     out_file = 'out//trudeau_raw.csv'
     # NOTE: tweet id (incrementing) is found in tweet url, advanced search is helpful for looking back
@@ -33,14 +35,18 @@ def main():
 
     data_temp.to_csv(out_file, index=False, encoding='utf-8')
 
+
 def get_tokens():
-    # TODO: read shhh.txt file containing tokens
-    print(consumer_key)
-    print(consumer_secret)
-    print(access_token)
-    print(access_secret)
+    f = open('shhh.txt', 'r')
+    f.readline()
+    consumer_key = f.readline()
+    consumer_secret = f.readline()
+    access_token = f.readline()
+    access_secret = f.readline()
+    f.close()
     return consumer_key, consumer_secret, access_token, access_secret
 
+
 if __name__ == '__main__':
-    get_tokens()
+    main()
 
