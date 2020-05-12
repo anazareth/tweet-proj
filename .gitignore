@@ -2,3 +2,4 @@
 venv
 shhh.txt
 *.txt
+.ipynb_checkpoints
