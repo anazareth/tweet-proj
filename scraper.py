@@ -10,8 +10,8 @@ def main():
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
     # define user we want to get tweets from
-    target_username = 'JustinTrudeau'
-    out_file = 'tweet_out//trudeau_raw.csv'
+    target_username = 'BorisJohnson'  # or 'JustinTrudeau'
+    out_file = 'tweet_out//boris_raw.csv'
     # NOTE: tweet id (incrementing) is found in tweet url, advanced search is helpful for looking back
     start_id = 1212375795538309120  # tweet id at least start_id
     final_id = 1256030193325662208  # tweet id at most final_id
@@ -35,6 +35,7 @@ def main():
     data_temp['Source'] = np.array([tweet.source for tweet in tweets])
     data_temp['Favourites'] = np.array([tweet.favorite_count for tweet in tweets])
     data_temp['RTs'] = np.array([tweet.retweet_count for tweet in tweets])
+    data_temp['Username'] = target_username
 
     data_temp.to_csv(out_file, index=False, encoding='utf-8')
 
