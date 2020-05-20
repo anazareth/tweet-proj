@@ -11,8 +11,8 @@ def main():
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
     # define user we want to get tweets from
-    target_username = 'realDonaldTrump'
-    out_file = 'tweet_out//trump_raw.csv'
+    target_username = 'JustinTrudeau'
+    out_file = 'tweet_out//trudeau_raw.csv'
     # NOTE: tweet id (incrementing) is found in tweet url, advanced search is helpful for looking back
     start_id = 1212547186506059775  # tweet id at least start_id
     final_id = 1256024228777857028  # tweet id at most final_id
