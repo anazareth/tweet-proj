@@ -12,10 +12,10 @@ def main():
     api = tweepy.API(auth)
     # define user we want to get tweets from
     target_username = 'JustinTrudeau'
-    out_file = 'tweet_out//trudeau_raw.csv'
+    out_file = 'data//trudeau_raw.csv'
     # NOTE: tweet id (incrementing) is found in tweet url, advanced search is helpful for looking back
-    start_id = 1212547186506059775  # tweet id at least start_id
-    final_id = 1256024228777857028  # tweet id at most final_id
+    start_id = 1212375736503406592  # tweet id at least start_id
+    final_id = 1267229979449966594  # tweet id at most final_id
     new_tweets = api.user_timeline(screen_name=target_username, since_id=start_id, max_id=final_id, count=1,
                                    tweet_mode='extended')
     tweets = new_tweets
@@ -28,7 +28,7 @@ def main():
         tweets.extend(new_tweets)
         final_id = tweets[-1].id - 1
         print('...'+str(len(tweets))+' tweets downloaded thus far, up to ' + str(tweets[-1].created_at))
-        time.sleep(6)
+        # time.sleep(6)
     print(" Downloaded " + str(len(tweets)) + " tweets from " + target_username + ".")
 
     data_temp = pd.DataFrame(data=[tweet.full_text for tweet in tweets], columns=["Tweets"])
@@ -38,6 +38,7 @@ def main():
     data_temp['Favourites'] = np.array([tweet.favorite_count for tweet in tweets])
     data_temp['RTs'] = np.array([tweet.retweet_count for tweet in tweets])
     data_temp['Username'] = target_username
+    data_temp['id_str'] = np.array([tweet.id for tweet in tweets])
 
     data_temp.to_csv(out_file, index=False, encoding='utf-8')
 
