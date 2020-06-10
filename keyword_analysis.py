@@ -10,10 +10,8 @@ if len(sys.argv) > 1:
     username = sys.argv[3]
 else:
     input_csv = r'data\JustinTrudeau_clean.csv'
-    ism_txt = 'trudeauisms.txt'
+    ism_txt = r'data\kw_ana\trudeauisms.txt'
     username = 'JustinTrudeau'
-output_name = os.path.join(os.path.split(input_csv)[0], username + '_clean.csv')
-default_lang = 'en'
 
 
 def main():
@@ -45,22 +43,26 @@ def get_word_freq(df):
         for line in f:
             (key, val) = line.split(':')
             common_phrases[key] = val
+
+    df['TweetsTokenized'] = [tokenize_tweet(t, common_phrases, punctuation, words_to_remove) for t in df['Tweets']]
+
     # -- create df of top 100 occurring words by month --
     keyword_freq = pd.DataFrame()
     for m in ['January', 'February', 'March', 'April', 'May']:  # get top words from each month, create df
         mth = m.lower()[0:3]  # first three letters of lowercase month
-        mth_tweets = df.loc[df['Month'] == m]['Tweets']  # tweets from specific month
-        words = pd.Series(np.concatenate([tokenize_tweet(t, common_phrases, punctuation, words_to_remove)
-                                          for t in mth_tweets])).value_counts()[0:100]
+        mth_tweets = df.loc[df['Month'] == m]['TweetsTokenized']  # tweets from specific month
+        words = pd.Series(np.concatenate([tt for tt in mth_tweets])).value_counts()[0:100]
         keyword_freq['kw_'+mth] = words.index
         keyword_freq['freq_'+mth] = words.values
     words = pd.Series(np.concatenate([tokenize_tweet(t, common_phrases, punctuation, words_to_remove)
                                       for t in df['Tweets']])).value_counts()[0:100]
     keyword_freq['kw_all'] = words.index
     keyword_freq['freq_all'] = words.values
-    # -- save df to csv --
-    output_path = os.path.join('data', 'kw_ana', username + '_words.csv')
-    keyword_freq.to_csv(output_path, header=True, encoding='utf-8', index=False)
+    # -- save df and kw freq to csv --
+    output_path_df = os.path.join('data', 'kw_ana', username + '_tokenized.csv')
+    df.to_csv(output_path_df, header=True, encoding='utf-8', index=False)
+    output_path_kw = os.path.join('data', 'kw_ana', username + '_words.csv')
+    keyword_freq.to_csv(output_path_kw, header=True, encoding='utf-8', index=False)
 
 
 def tokenize_tweet(tweet, common_phrases, punctuation, words_to_remove):
@@ -72,7 +74,7 @@ def tokenize_tweet(tweet, common_phrases, punctuation, words_to_remove):
     words = tweet.split(sep=' ')
     keywords = []
     for w in words:
-        if w not in words_to_remove and (w.isalpha() or '_' in w):
+        if w not in words_to_remove and (w.isalpha() or '_' in w or any(c.isdigit() for c in w)):
             # add if (1) not an undesirable word and (2) either no punctuation or contains only acceptable punctuation
             keywords.append(w)
     return keywords
