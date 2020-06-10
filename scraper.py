@@ -1,8 +1,13 @@
 import tweepy
 import pandas as pd
 import numpy as np
-import time
+import sys
 
+# run script from cmd line like this:
+# scraper.py username start_id end_id
+# --username (string) - target twitter handle
+# --start_id (int) - tweet id (found in URL) of earliest tweet desired
+# --end_id (int) - tweet id (found in URL) of final tweet desired
 
 def main():
     consumer_key, consumer_secret, access_token, access_secret = get_tokens()
@@ -11,11 +16,11 @@ def main():
     auth.set_access_token(access_token, access_secret)
     api = tweepy.API(auth)
     # define user we want to get tweets from
-    target_username = 'JustinTrudeau'
-    out_file = 'data//trudeau_raw.csv'
+    target_username = sys.argv[1]
+    out_file = 'data//'+target_username+'_raw.csv'
     # NOTE: tweet id (incrementing) is found in tweet url, advanced search is helpful for looking back
-    start_id = 1212375736503406592  # tweet id at least start_id
-    final_id = 1267229979449966594  # tweet id at most final_id
+    start_id = sys.argv[2]  # tweet id at least start_id
+    final_id = sys.argv[3]  # tweet id at most final_id
     new_tweets = api.user_timeline(screen_name=target_username, since_id=start_id, max_id=final_id, count=1,
                                    tweet_mode='extended')
     tweets = new_tweets
