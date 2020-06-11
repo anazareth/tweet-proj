@@ -54,8 +54,7 @@ def get_word_freq(df):
         words = pd.Series(np.concatenate([tt for tt in mth_tweets])).value_counts()[0:100]
         keyword_freq['kw_'+mth] = words.index
         keyword_freq['freq_'+mth] = words.values
-    words = pd.Series(np.concatenate([tokenize_tweet(t, common_phrases, punctuation, words_to_remove)
-                                      for t in df['Tweets']])).value_counts()[0:100]
+    words = pd.Series(np.concatenate([tt for tt in df['TweetsTokenized']])).value_counts()[0:100]
     keyword_freq['kw_all'] = words.index
     keyword_freq['freq_all'] = words.values
     # -- save df and kw freq to csv --
