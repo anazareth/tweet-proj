@@ -35,7 +35,7 @@ def get_word_freq(df):
                       'know', 'open', 'others', 'better', 'small', 'say', 'need', 'come', 'long', 'doesnt', 'weve',
                       'wrong', 'happen', 'true', 'everything', 'getting', 'three', 'zero', 'fact', 'knew', 'sure',
                       'ago', 'including', 'already', 'right', 'every', 'things', 'never', 'fast', 'im', 'youre',
-                      'thats', 'around', 'since', 'met', 'weve'}
+                      'thats', 'around', 'since', 'met', 'weve', 'ill', 'theyre'}
     words_to_remove = more_stopwords.union(english_stopwords)  # all words to remove
     # want to count the following common phrases from our target as one word:
     common_phrases = {}
