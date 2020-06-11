@@ -3,6 +3,7 @@ import numpy as np
 import sys
 import os
 from nltk.corpus import stopwords
+import regex
 
 if len(sys.argv) > 1:
     input_csv = sys.argv[1]
@@ -66,14 +67,15 @@ def get_word_freq(df):
 
 def tokenize_tweet(tweet, common_phrases, punctuation, words_to_remove):
     tweet = str(tweet).lower()  # only want lowercase letters
-    tweet = tweet.translate(str.maketrans('','',punctuation))
+    tweet = tweet.translate(str.maketrans('', '', punctuation))
     for orig, new in common_phrases.items():
         tweet = tweet.replace(orig, new)
 
     words = tweet.split(sep=' ')
     keywords = []
     for w in words:
-        if w not in words_to_remove and (w.isalpha() or '_' in w or any(c.isdigit() for c in w)):
+        w = regex.sub(r'[^\p{Latin}^{0-9}^_]', '', w).strip()  # only keep latin chars, numbers, and '_'
+        if len(w) > 0 and w not in words_to_remove and (w.isalpha() or any(c.isdigit() for c in w) or '_' in w):
             # add if (1) not an undesirable word and (2) either no punctuation or contains only acceptable punctuation
             keywords.append(w)
     return keywords
