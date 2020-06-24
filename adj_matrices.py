@@ -3,6 +3,11 @@ import sys
 import os
 from ast import literal_eval
 
+# adj_matrices.py input_csv input_words username
+# --input_csv (str) - name of csv file (and path if necessary)
+# --input_words (str) - csv file with monthly top100 words
+# --username (str) - name of target for output file
+
 if len(sys.argv) > 1:
     input_csv = sys.argv[1]
     input_words = sys.argv[2]

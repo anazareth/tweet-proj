@@ -6,11 +6,10 @@ import os
 import sys
 
 # run from cmd line like so:
-# clean_tweets.py data//trudeau_raw.csv remove_rts username
-# with arguments:
-# input_csv (str) - name of csv file (and path if necessary). Note that output file will go in same location.
-# remove_rts (int) - boolean (0=false, 1=True) if RTs should be removed or not
-# username (str) - name of target for output file: realDonaldTrump or JustinTrudeau, others in future
+# clean_tweets.py input_csv remove_rts username
+# --input_csv (str) - name of csv file (and path if necessary). Note that output file will go in same location.
+# --remove_rts (int) - boolean (0=false, 1=True) if RTs should be removed or not
+# --username (str) - name of target for output file: realDonaldTrump or JustinTrudeau, others in future
 
 
 if len(sys.argv)>1:

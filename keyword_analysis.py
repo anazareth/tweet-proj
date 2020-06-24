@@ -5,6 +5,11 @@ import os
 from nltk.corpus import stopwords
 import regex
 
+# keyword_analysis.py data//trudeau_clean.csv ism_txt username
+# --input_csv (str) - name of csv file (and path if necessary)
+# --ism_txt (str) - text file with dict of multi word phrases associated with user
+# --username (str) - name of target for output file
+
 if len(sys.argv) > 1:
     input_csv = sys.argv[1]
     ism_txt = sys.argv[2]
