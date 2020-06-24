@@ -4,19 +4,23 @@ import sys
 import os
 from nltk.corpus import stopwords
 import regex
+from ast import literal_eval
 
-# keyword_analysis.py data//trudeau_clean.csv ism_txt username
+# keyword_analysis.py data//trudeau_clean.csv ism_txt stopwords_txt username
 # --input_csv (str) - name of csv file (and path if necessary)
+# --stopwords_txt (str) - text file with list of extra stopwords to remove
 # --ism_txt (str) - text file with dict of multi word phrases associated with user
 # --username (str) - name of target for output file
 
 if len(sys.argv) > 1:
     input_csv = sys.argv[1]
     ism_txt = sys.argv[2]
-    username = sys.argv[3]
+    stopwords_txt = sys.argv[3]
+    username = sys.argv[4]
 else:
     input_csv = r'data\JustinTrudeau_clean.csv'
-    ism_txt = r'data\kw_ana\trudeauisms.txt'
+    ism_txt = r'meta\trudeauisms.txt'
+    stopwords_txt = r'meta\stopwords.txt'
     username = 'JustinTrudeau'
 
 
@@ -34,14 +38,8 @@ def get_word_freq(df):
     punctuation = '!"$%&\'\’“()*+,-./:;<=>?[\\]^`{|}~'
     english_stopwords = set(stopwords.words('english'))  # common uninteresting words
     # empirically added words to remove
-    more_stopwords = {'dont', 'get', 'make', 'even', 'also', 'time', 'said', 'far', 'amp', 'new', 'would', 'like', 'us',
-                      'back', 'two', 'its', 'many', 'want', 'done', 'made', 'really', 'yet', 'got', 'nothing',
-                      'ever', 'read', 'one', 'last', 'well', 'way', 'total', 'see', 'look', 'complete', 'didnt',
-                      'keep', 'today', 'go', 'going', 'must', 'years', 'much', 'pm', 'always', 'first', 'day', 'let',
-                      'know', 'open', 'others', 'better', 'small', 'say', 'need', 'come', 'long', 'doesnt', 'weve',
-                      'wrong', 'happen', 'true', 'everything', 'getting', 'three', 'zero', 'fact', 'knew', 'sure',
-                      'ago', 'including', 'already', 'right', 'every', 'things', 'never', 'fast', 'im', 'youre',
-                      'thats', 'around', 'since', 'met', 'weve', 'ill', 'theyre'}
+    with open(stopwords_txt) as f:
+        more_stopwords = literal_eval(f.read().strip('\n'))  # read extra stopwords from file, remove newline
     words_to_remove = more_stopwords.union(english_stopwords)  # all words to remove
     # want to count the following common phrases from our target as one word:
     common_phrases = {}
