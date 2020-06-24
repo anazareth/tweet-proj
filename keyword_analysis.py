@@ -78,7 +78,8 @@ def tokenize_tweet(tweet, common_phrases, punctuation, words_to_remove):
     keywords = []
     for w in words:
         w = regex.sub(r'[^\p{Latin}{0-9}_#@]', '', w).strip()  # only keep latin chars, numbers, and '_', '#', '@'
-        if len(w) > 0 and w not in words_to_remove and (w.isalpha() or any(c.isdigit() for c in w) or '_' in w):
+        if len(w) > 0 and w not in words_to_remove and \
+                (w.isalpha() or any(c.isdigit() for c in w) or any(p in w for p in '_#@')):
             # add if (1) not an undesirable word and (2) either no punctuation or contains only acceptable punctuation
             keywords.append(w)
     return keywords
