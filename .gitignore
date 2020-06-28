@@ -1,8 +1,7 @@
 .idea
 venv
+*.ipynb
 shhh.txt
 *.txt
 .ipynb_checkpoints
-*.ipynb
 old/
-auto_louvain.ipynb
