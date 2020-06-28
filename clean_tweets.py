@@ -37,7 +37,7 @@ def format_cols(df):
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           str(num_tweets_read) + ' tweets read from file \'' + input_csv + '\'.')  # log message
 
-    if 'trump' in input_csv:  # trump tweets come from archive, so column names are different
+    if 'trump' in input_csv.lower():  # trump tweets come from archive, so column names are different
         df.rename(columns={'source': 'Source', 'text': 'Tweets', 'created_at': 'Date', 'retweet_count': 'RTs',
                            'is_retweet': 'isRT', 'favorite_count': 'Favourites'}, inplace=True)
 
@@ -57,7 +57,7 @@ def format_cols(df):
     df['Tweets'] = df['Tweets'].str.strip()
 
     # -- remove french tweets --
-    if 'trudeau' in input_csv:  # for now trudeau is the only bilingual leader, may need to change later
+    if 'trudeau' in input_csv.lower():  # for now trudeau is the only bilingual leader, may need to change later
         # use langdetect package to create column specifying language
         df['Language'] = np.array([my_detect(t) for t in df['Tweets']])
 
@@ -105,6 +105,8 @@ def add_data(df):
     if os.path.exists(input_csv):
         source_path = input_csv
         target_path = os.path.join(os.path.split(input_csv)[0], 'old', os.path.split(input_csv)[1])
+        if os.path.exists(target_path):
+            os.remove(target_path)
         os.rename(source_path, target_path)  # move the input data file since we don't need it anymore
         print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
               'Input file ' + input_csv + ' moved to ' + target_path)
