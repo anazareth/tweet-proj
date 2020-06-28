@@ -42,7 +42,7 @@ def get_word_freq(df):
     english_stopwords = set(stopwords.words('english'))  # common uninteresting words
     # empirically added words to remove
     with open(stopwords_txt) as f:
-        more_stopwords = literal_eval(f.read().strip('\n'))  # read extra stopwords from file, remove newline
+        more_stopwords = set(literal_eval(f.read().strip('\n')))  # read extra stopwords from file, remove newline
     words_to_remove = more_stopwords.union(english_stopwords)  # all words to remove
     # want to count the following common phrases from our target as one word:
     common_phrases = {}
