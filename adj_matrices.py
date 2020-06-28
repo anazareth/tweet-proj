@@ -57,4 +57,6 @@ def create_matrix(mth, mth_tts, top100_words):
 
 
 if __name__ == '__main__':
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'STARTING program ' + sys.argv[0] + '...')
     main()

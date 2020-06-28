@@ -10,6 +10,7 @@ import datetime as dt
 # --start_id (int) - tweet id (found in URL) of earliest tweet desired
 # --end_id (int) - tweet id (found in URL) of final tweet desired
 
+
 def main():
     consumer_key, consumer_secret, access_token, access_secret = get_tokens()
     # init connection with authentication parameters
@@ -63,5 +64,7 @@ def get_tokens():
 
 
 if __name__ == '__main__':
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'STARTING program ' + sys.argv[0] + '...')
     main()
 

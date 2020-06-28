@@ -124,4 +124,6 @@ def my_detect(text):
 
 
 if __name__ == '__main__':
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'STARTING program ' + sys.argv[0] + '...')
     main()

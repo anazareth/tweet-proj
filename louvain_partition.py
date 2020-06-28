@@ -54,5 +54,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process user/file info for community detection.')
     parser.add_argument('-u', '--username', help='twitter handle of user', default='JustinTrudeau', required=True)
     parser.add_argument('-M', '--matfile', help='adjacency matrix for desired month')
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'STARTING program ' + parser.prog + '...')
     args = parser.parse_args()
     main(args)
