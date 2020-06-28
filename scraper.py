@@ -2,6 +2,7 @@ import tweepy
 import pandas as pd
 import numpy as np
 import sys
+import datetime as dt
 
 # run script from cmd line like this:
 # scraper.py username start_id end_id
@@ -32,9 +33,11 @@ def main():
                                        tweet_mode='extended')
         tweets.extend(new_tweets)
         final_id = tweets[-1].id - 1
-        print('...'+str(len(tweets))+' tweets downloaded thus far, up to ' + str(tweets[-1].created_at))
+        print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+              str(len(tweets)) + ' tweets downloaded thus far, up to ' + str(tweets[-1].created_at))
         # time.sleep(6)
-    print(" Downloaded " + str(len(tweets)) + " tweets from " + target_username + ".")
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'Downloaded ' + str(len(tweets)) + ' tweets from ' + target_username + '.')
 
     data_temp = pd.DataFrame(data=[tweet.full_text for tweet in tweets], columns=["Tweets"])
     data_temp['Length'] = np.array([len(tweet.full_text) for tweet in tweets])

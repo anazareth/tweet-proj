@@ -2,6 +2,7 @@ import pandas as pd
 import sys
 import os
 from ast import literal_eval
+import datetime as dt
 
 # adj_matrices.py input_csv input_words username
 # --input_csv (str) - name of csv file (and path if necessary)
@@ -21,6 +22,8 @@ else:
 def main():
     df = pd.read_csv(input_csv, encoding='utf-8')
     words_df = pd.read_csv(input_words, encoding='utf-8')
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'Read ' + str(len(df)) + ' rows from file ' + input_csv)
     for m in ['January', 'February', 'March', 'April', 'May', 'all']:
         mth = m.lower()[0:3]
         top100_words = list(words_df['kw_' + mth])
@@ -49,6 +52,8 @@ def create_matrix(mth, mth_tts, top100_words):
     # -- save df to csv --
     output_path = os.path.join('data', 'kw_ana', username + '_adjmat_'+mth+'.csv')
     adj_mat.to_csv(output_path, header=True, encoding='utf-8', sep=';')
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'Successfully wrote ' + str(len(adj_mat)) + ' rows to \'' + output_path + '\'')
 
 
 if __name__ == '__main__':

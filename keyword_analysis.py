@@ -5,6 +5,7 @@ import os
 from nltk.corpus import stopwords
 import regex
 from ast import literal_eval
+import datetime as dt
 
 # keyword_analysis.py data//trudeau_clean.csv ism_txt stopwords_txt username
 # --input_csv (str) - name of csv file (and path if necessary)
@@ -26,6 +27,8 @@ else:
 
 def main():
     df = pd.read_csv(input_csv, encoding='utf-8')
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'Read ' + str(len(df)) + ' rows from file ' + input_csv)
 
     df['Tweets'].replace('', float('NaN'), inplace=True)
     df.dropna(subset=['Tweets'], inplace=True)
@@ -64,8 +67,12 @@ def get_word_freq(df):
     # -- save df and kw freq to csv --
     output_path_df = os.path.join('data', 'kw_ana', username + '_tokenized.csv')
     df.to_csv(output_path_df, header=True, encoding='utf-8', index=False)
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'Successfully wrote ' + str(len(df)) + ' rows to \'' + output_path_df + '\'')
     output_path_kw = os.path.join('data', 'kw_ana', username + '_words.csv')
     keyword_freq.to_csv(output_path_kw, header=True, encoding='utf-8', index=False)
+    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+          'Successfully wrote ' + str(len(keyword_freq)) + ' rows to \'' + output_path_kw + '\'')
 
 
 def tokenize_tweet(tweet, common_phrases, punctuation, words_to_remove):

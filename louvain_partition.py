@@ -45,9 +45,6 @@ def find_communities(network, month, username):
         partition = community_louvain.best_partition(network)  # compute best partition
         num_partitions = max(partition.values()) + 1  # communities labelled 0 to k-1, where k is number of communities
         iter_tracking[num_partitions] += 1  # increment counter
-        if num_partitions > 9:
-            print('Large number of partitions:', num_partitions)
-
     num_communities = str(max(iter_tracking, key=iter_tracking.get))  # most commonly found number of communities
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           'Found ' + num_communities + ' communities in file \'' + month + '\'.')
@@ -57,8 +54,5 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Process user/file info for community detection.')
     parser.add_argument('-u', '--username', help='twitter handle of user', default='JustinTrudeau', required=True)
     parser.add_argument('-M', '--matfile', help='adjacency matrix for desired month')
-    # parser.add_argument('-w', '--wordstop100', help='top 100 words for each month in scope of analysis')
-    # parser.add_argument('-t', '--tokenizedwords',
-    #                     help='all tweets for user, with column of parsed/tokenized tweet as list')
     args = parser.parse_args()
     main(args)
