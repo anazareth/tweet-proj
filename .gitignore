@@ -3,6 +3,6 @@ venv
 shhh.txt
 *.txt
 .ipynb_checkpoints
-.ipynb
+*.ipynb
 old/
-data/
+auto_louvain.ipynb
