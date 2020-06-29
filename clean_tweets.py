@@ -16,7 +16,7 @@ if len(sys.argv)>1:
     input_csv = sys.argv[1]
     remove_rts = bool(sys.argv[2])
     username = sys.argv[3]
-else:
+else:  # default settings when running from file
     input_csv = r'data\old\trumparchive_jfma_raw.csv'
     remove_rts = True
     username = 'realDonaldTrump'
@@ -25,7 +25,10 @@ default_lang = 'en'
 
 
 def main():
-
+    if not os.path.exists(input_csv):
+        print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+              'File  \'' + input_csv + '\' not found, tweet processing abortded.')  # log message
+        exit()
     df = pd.read_csv(input_csv)  # read csv containing output of twitter scraper
 
     df = format_cols(df)
