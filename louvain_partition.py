@@ -42,10 +42,11 @@ def find_communities(network, month, username):
     N = 100  # number of times to run Louvain
     iter_tracking = {k: 0 for k in range(2, 25)}
     for i in range(N):
-        partition = community_louvain.best_partition(network)  # compute best partition
+        partition = community_louvain.best_partition(network, resolution=1.05)  # compute best partition
         num_partitions = max(partition.values()) + 1  # communities labelled 0 to k-1, where k is number of communities
         iter_tracking[num_partitions] += 1  # increment counter
-    close_values = [f for f in iter_tracking.values() if f > N / 3]  # f is frequency of partition; N/3 is set threshold
+    # f is frequency of partition; N/3 is set threshold; don't want less than 4 communities
+    close_values = [f for f in iter_tracking.values() if f > N / 3 and f > 3]
     # if it's close, take the lower number of communities
     num_communities = min([k for k in iter_tracking.keys() for f in close_values if f == iter_tracking[k]])
     pct_certain = iter_tracking.get(num_communities)/N
