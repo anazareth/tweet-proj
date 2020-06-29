@@ -27,7 +27,7 @@ default_lang = 'en'
 def main():
     if not os.path.exists(input_csv):
         print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
-              'File  \'' + input_csv + '\' not found, tweet processing abortded.')  # log message
+              'File  \'' + input_csv + '\' not found, tweet processing aborted.')  # log message
         exit()
     df = pd.read_csv(input_csv)  # read csv containing output of twitter scraper
 
