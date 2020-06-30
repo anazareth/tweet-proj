@@ -40,15 +40,17 @@ def main(args):
 def find_communities(network, month, username):
     # find most likely number of commnunities, since there is an element of randomness to the Louvain algorithm
     N = 100  # number of times to run Louvain
-    iter_tracking = {k: 0 for k in range(2, 25)}
+    iter_tracking = {k: 0 for k in range(2, 15)}
     for i in range(N):
         partition = community_louvain.best_partition(network, resolution=1.05)  # compute best partition
         num_partitions = max(partition.values()) + 1  # communities labelled 0 to k-1, where k is number of communities
         iter_tracking[num_partitions] += 1  # increment counter
     # f is frequency of partition; N/3 is set threshold; don't want less than 4 communities
     close_values = [f for f in iter_tracking.values() if f > N / 3]
-    # if it's close, take the lower number of communities
-    num_communities = min([k for k in iter_tracking.keys() for f in close_values if f == iter_tracking[k]])
+    # if it's close, take the lower number of communities, minimum 3 (3 ok in non-"tiebreaker" situations)
+    close_keys = [k for k in iter_tracking.keys() for f in close_values if f == iter_tracking[k]]
+    close_keys_gt3 = [k for k in close_keys if k > 3]
+    num_communities = min(close_keys_gt3) if len(close_keys_gt3) != 0 else min(close_keys)
     pct_certain = iter_tracking.get(num_communities)/N
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           'Found ' + str(num_communities) + ' communities in file \'' + month + '\' (' + str(pct_certain) + ').')
