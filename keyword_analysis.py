@@ -55,7 +55,7 @@ def get_word_freq(df):
 
     # -- create df of top 100 occurring words by month --
     keyword_freq = pd.DataFrame()
-    for m in ['January', 'February', 'March', 'April', 'May']:  # get top words from each month, create df
+    for m in ['January', 'February', 'March', 'April', 'May', 'June']:  # get top words from each month, create df
         mth = m.lower()[0:3]  # first three letters of lowercase month
         mth_tweets = df.loc[df['Month'] == m]['TweetsTokenized']  # tweets from specific month
         words = pd.Series(np.concatenate([tt for tt in mth_tweets])).value_counts()[0:100]

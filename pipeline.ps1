@@ -1,7 +1,7 @@
 $username = $args[0]
 if ( $username -ne 'realDonaldTrump' ) {
 	# scraper doesn't work for donald trump, but everything else works
-	python scraper.py $username 1212268323691532289 1267229979449966594
+	python scraper.py $username 1212268323691532289 1278078666942173184
 }
 if ( $username -eq 'realDonaldTrump' ) {
 	$ismtxt = 'trumpisms.txt'

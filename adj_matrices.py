@@ -24,7 +24,7 @@ def main():
     words_df = pd.read_csv(input_words, encoding='utf-8')
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           'Read ' + str(len(df)) + ' rows from file ' + input_csv)
-    for m in ['January', 'February', 'March', 'April', 'May', 'all']:
+    for m in ['January', 'February', 'March', 'April', 'May', 'June', 'all']:
         mth = m.lower()[0:3]
         top100_words = list(words_df['kw_' + mth])
         if mth == 'all':
