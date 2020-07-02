@@ -40,7 +40,7 @@ def main(args):
 def find_communities(network, month, username):
     # find most likely number of commnunities, since there is an element of randomness to the Louvain algorithm
     N = 100  # number of times to run Louvain
-    iter_tracking = {k: 0 for k in range(2, 15)}
+    iter_tracking = {k: 0 for k in range(2, 25)}
     for i in range(N):
         partition = community_louvain.best_partition(network, resolution=1.05)  # compute best partition
         num_partitions = max(partition.values()) + 1  # communities labelled 0 to k-1, where k is number of communities
