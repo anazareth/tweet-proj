@@ -75,7 +75,7 @@ def format_cols(df):
     # -- create month and quarter column --
     df['Date'] = pd.to_datetime(df['Date'])  # set date type
     df['Month'] = df['Date'].dt.month_name()  # create column month name from date
-    df['Quarter'] = (df['Date'].dt.month - 1)//3  # create column month name from date
+    df['Quarter'] = (df['Date'].dt.month - 1)//3 + 1  # create column month name from date
 
     return df
 
