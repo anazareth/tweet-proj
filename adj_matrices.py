@@ -24,21 +24,26 @@ def main():
     words_df = pd.read_csv(input_words, encoding='utf-8')
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           'Read ' + str(len(df)) + ' rows from file ' + input_csv)
-    for m in ['January', 'February', 'March', 'April', 'May', 'June', 'all']:
-        mth = m.lower()[0:3]
-        top100_words = list(words_df['kw_' + mth])
-        if mth == 'all':
-            mth_tweets = df['TweetsTokenized']
+    partition_method = 'Quarter'  # partition tweets either by Month or by Quarter - must match a column header
+    if partition_method == 'Month':
+        period_list = ['January', 'February', 'March', 'April', 'May', 'June', 'all']
+    elif partition_method == 'Quarter':
+        period_list = ['Q1', 'Q2', 'all']
+    for period in period_list:
+        period_abbr = period.lower()[0:3]
+        top100_words = list(words_df['kw_' + period_abbr])
+        if period_abbr == 'all':
+            prd_tweets = df['TweetsTokenized']
         else:
-            mth_tweets = df.loc[df['Month'] == m]['TweetsTokenized']
-        mth_tts = [literal_eval(i) for i in mth_tweets]
-        create_matrix(mth, mth_tts, top100_words)
+            prd_tweets = df.loc[df[partition_method] == period]['TweetsTokenized']
+        prd_tts = [literal_eval(i) for i in prd_tweets]
+        create_matrix(period_abbr, prd_tts, top100_words)
 
 
-def create_matrix(mth, mth_tts, top100_words):
+def create_matrix(period_abbr, prd_tts, top100_words):
     top100_set = set(top100_words)
     adj_mat = pd.DataFrame(0, index=top100_words, columns=top100_words)  # weighted adjacency matrix (init with 0's)
-    for tt in mth_tts:  # for each tweet
+    for tt in prd_tts:  # for each tweet
         tweet_words = set(tt) & top100_set  # set intersection (don't care about words outside top 100)
         for wrd in tweet_words:  # for each top100 word in the tweet
             wrd_pos = top100_words.index(wrd)
@@ -50,7 +55,7 @@ def create_matrix(mth, mth_tts, top100_words):
                 else:
                     adj_mat.loc[wrd, rem] = adj_mat.loc[wrd, rem] + 1
     # -- save df to csv --
-    output_path = os.path.join('data', 'kw_ana', username + '_adjmat_'+mth+'.csv')
+    output_path = os.path.join('data', 'kw_ana', username + '_adjmat_' + period_abbr + '.csv')
     adj_mat.to_csv(output_path, header=True, encoding='utf-8', sep=';')
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           'Successfully wrote ' + str(len(adj_mat)) + ' rows to \'' + output_path + '\'')
