@@ -72,9 +72,10 @@ def format_cols(df):
     else:
         df['Language'] = default_lang  # still want this column, assume all in default (usually english)
 
-    # -- create month column --
+    # -- create month and quarter column --
     df['Date'] = pd.to_datetime(df['Date'])  # set date type
     df['Month'] = df['Date'].dt.month_name()  # create column month name from date
+    df['Quarter'] = (df['Date'].dt.month - 1)//3  # create column month name from date
 
     return df
 
