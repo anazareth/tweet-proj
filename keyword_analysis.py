@@ -55,7 +55,7 @@ def get_word_freq(df):
 
     # -- create df of top 100 occurring words by month --
     keyword_freq = pd.DataFrame()
-    partition_method = 'Month'  # partition tweets either by Month or by Quarter - must match a column header
+    partition_method = 'Quarter'  # partition tweets either by Month or by Quarter - must match a column header
     if partition_method == 'Month':
         period_list = ['January', 'February', 'March', 'April', 'May', 'June']
     elif partition_method == 'Quarter':
