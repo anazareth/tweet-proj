@@ -18,8 +18,9 @@ def main(args):
     if args.matfile is not None:
         file_list = list(args.matfile)
     else:  # loop through all months
-        file_list = [os.path.join('data', 'kw_ana', username + '_adjmat_' + m + '.csv') for m in
-                     ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'all']]
+        # period_list = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'all']
+        period_list = ['q1', 'q2', 'all']
+        file_list = [os.path.join('data', 'kw_ana', username + '_adjmat_' + m + '.csv') for m in period_list]
     for file_path in file_list:
         df = pd.read_csv(file_path, delimiter=';', index_col=0)
 
@@ -37,7 +38,7 @@ def main(args):
         find_communities(ntwrk, file_name, username)
 
 
-def find_communities(network, month, username):
+def find_communities(network, file_name, username):
     # find most likely number of commnunities, since there is an element of randomness to the Louvain algorithm
     N = 100  # number of times to run Louvain
     iter_tracking = {k: 0 for k in range(2, 25)}
@@ -53,7 +54,7 @@ def find_communities(network, month, username):
     num_communities = min(close_keys_gt3) if len(close_keys_gt3) != 0 else min(close_keys)
     pct_certain = iter_tracking.get(num_communities)/N
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
-          'Found ' + str(num_communities) + ' communities in file \'' + month + '\' (' + str(pct_certain) + ').')
+          'Found ' + str(num_communities) + ' communities in file \'' + file_name + '\' (' + str(pct_certain) + ').')
 
 
 if __name__ == '__main__':
