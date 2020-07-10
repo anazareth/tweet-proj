@@ -60,7 +60,7 @@ def format_cols(df):
     df['Tweets'] = df['Tweets'].str.strip()
 
     # -- remove french tweets --
-    if 'trudeau' in input_csv.lower():  # for now trudeau is the only bilingual leader, may need to change later
+    if any(l in input_csv.lower() for l in ['trudeau', 'jagmeet', 'scheer']):  # for bilingual leaders
         # use langdetect package to create column specifying language
         df['Language'] = np.array([my_detect(t) for t in df['Tweets']])
 
