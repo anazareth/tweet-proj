@@ -55,29 +55,30 @@ def get_word_freq(df):
 
     # -- create df of top 100 occurring words by month --
     keyword_freq = pd.DataFrame()
-    partition_method = 'Quarter'  # partition tweets either by Month or by Quarter - must match a column header
-    if partition_method == 'Month':
-        period_list = ['January', 'February', 'March', 'April', 'May', 'June']
-    elif partition_method == 'Quarter':
-        period_list = ['Q1', 'Q2']
-    for period in period_list:  # get top words from each month, create df
-        period_abbr = period.lower()[0:3]  # first three letters of lowercase month (quarter unaffected)
-        prd_tweets = df.loc[df[partition_method] == period]['TweetsTokenized']  # tweets from specific month
-        words = pd.Series(np.concatenate([tt for tt in prd_tweets])).value_counts()[0:100]
-        keyword_freq['kw_'+period_abbr] = words.index
-        keyword_freq['freq_'+period_abbr] = words.values
-    words = pd.Series(np.concatenate([tt for tt in df['TweetsTokenized']])).value_counts()[0:100]
-    keyword_freq['kw_all'] = words.index
-    keyword_freq['freq_all'] = words.values
-    # -- save df and kw freq to csv --
-    output_path_df = os.path.join('data', 'kw_ana', username + '_' + partition_method + 's_tokenized.csv')
+    for partition_method in ['Month', 'Quarter']:  # partition method must match a column header
+        if partition_method == 'Month':
+            period_list = ['January', 'February', 'March', 'April', 'May', 'June']
+        elif partition_method == 'Quarter':
+            period_list = ['Q1', 'Q2']
+        for period in period_list:  # get top words from each month, create df
+            period_abbr = period.lower()[0:3]  # first three letters of lowercase month (quarter unaffected)
+            prd_tweets = df.loc[df[partition_method] == period]['TweetsTokenized']  # tweets from specific month
+            words = pd.Series(np.concatenate([tt for tt in prd_tweets])).value_counts()[0:100]
+            keyword_freq['kw_'+period_abbr] = words.index
+            keyword_freq['freq_'+period_abbr] = words.values
+        words = pd.Series(np.concatenate([tt for tt in df['TweetsTokenized']])).value_counts()[0:100]
+        last_partition = period_list[-1].lower()[0:3] + 'YTD'  # eg 'junYTD' or 'q2YTD'
+        keyword_freq['kw_' + last_partition] = words.index
+        keyword_freq['freq_' + last_partition] = words.values
+        # -- save df and kw freq to csv --
+        output_path_kw = os.path.join('data', 'kw_ana', username + '_' + partition_method + 's_words.csv')
+        keyword_freq.to_csv(output_path_kw, header=True, encoding='utf-8', index=False)
+        print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+              'Successfully wrote ' + str(len(keyword_freq)) + ' rows to \'' + output_path_kw + '\'')
+    output_path_df = os.path.join('data', 'kw_ana', username + '_tokenized.csv')
     df.to_csv(output_path_df, header=True, encoding='utf-8', index=False)
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           'Successfully wrote ' + str(len(df)) + ' rows to \'' + output_path_df + '\'')
-    output_path_kw = os.path.join('data', 'kw_ana', username + '_' + partition_method + 's_words.csv')
-    keyword_freq.to_csv(output_path_kw, header=True, encoding='utf-8', index=False)
-    print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
-          'Successfully wrote ' + str(len(keyword_freq)) + ' rows to \'' + output_path_kw + '\'')
 
 
 def tokenize_tweet(tweet, common_phrases, punctuation, words_to_remove):

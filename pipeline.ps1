@@ -15,6 +15,7 @@ python clean_tweets.py data\$username'_raw.csv' 1 $username
 Write-Output '--------------------------------------------------------------------------------------'
 python keyword_analysis.py data\$username'_clean.csv' meta\$ismtxt meta\stopwords.txt $username
 Write-Output '--------------------------------------------------------------------------------------'
-python adj_matrices.py data\kw_ana\$username'_Quarters_tokenized.csv' data\kw_ana\$username'_Quarters_words.csv' $username
+python adj_matrices.py data\kw_ana\$username'_tokenized.csv' data\kw_ana\$username'_Quarters_words.csv' $username
+python adj_matrices.py data\kw_ana\$username'_tokenized.csv' data\kw_ana\$username'_Months_words.csv' $username
 Write-Output '--------------------------------------------------------------------------------------'
 python louvain_partition.py -u $username

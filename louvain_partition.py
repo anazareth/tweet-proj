@@ -18,8 +18,7 @@ def main(args):
     if args.matfile is not None:
         file_list = list(args.matfile)
     else:  # loop through all months
-        # period_list = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'all']
-        period_list = ['q1', 'q2', 'all']
+        period_list = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'junYTD', 'q1', 'q2', 'q2YTD']
         file_list = [os.path.join('data', 'kw_ana', username + '_adjmat_' + m + '.csv') for m in period_list]
     for file_path in file_list:
         df = pd.read_csv(file_path, delimiter=';', index_col=0)

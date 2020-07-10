@@ -15,7 +15,7 @@ if len(sys.argv) > 1:
     username = sys.argv[3]
 else:
     input_csv = r'data\kw_ana\JustinTrudeau_tokenized.csv'
-    input_words = r'data\kw_ana\JustinTrudeau_words.csv'
+    input_words = r'data\kw_ana\JustinTrudeau_Months_words.csv'
     username = 'JustinTrudeau'
 
 
@@ -24,20 +24,27 @@ def main():
     words_df = pd.read_csv(input_words, encoding='utf-8')
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           'Read ' + str(len(df)) + ' rows from file ' + input_csv)
-    partition_method = 'Quarter'  # partition tweets either by Month or by Quarter - must match a column header
+
+    if 'months' in input_words.lower():
+        partition_method = 'Month'
+    else:
+        partition_method = 'Quarter'
+
     if partition_method == 'Month':
-        period_list = ['January', 'February', 'March', 'April', 'May', 'June', 'all']
+        period_list = ['January', 'February', 'March', 'April', 'May', 'June']
     elif partition_method == 'Quarter':
-        period_list = ['Q1', 'Q2', 'all']
+        period_list = ['Q1', 'Q2']
     for period in period_list:
         period_abbr = period.lower()[0:3]
         top100_words = list(words_df['kw_' + period_abbr])
-        if period_abbr == 'all':
-            prd_tweets = df['TweetsTokenized']
-        else:
-            prd_tweets = df.loc[df[partition_method] == period]['TweetsTokenized']
+        prd_tweets = df.loc[df[partition_method] == period]['TweetsTokenized']
         prd_tts = [literal_eval(i) for i in prd_tweets]
         create_matrix(period_abbr, prd_tts, top100_words)
+    period_abbr = period_list[-1].lower()[0:3] + 'YTD'  # now for all tweets
+    top100_words = list(words_df['kw_' + period_abbr])
+    prd_tweets = df['TweetsTokenized']
+    prd_tts = [literal_eval(i) for i in prd_tweets]
+    create_matrix(period_abbr, prd_tts, top100_words)
 
 
 def create_matrix(period_abbr, prd_tts, top100_words):
