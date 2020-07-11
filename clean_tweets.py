@@ -43,12 +43,16 @@ def format_cols(df):
     if 'trump' in input_csv.lower():  # trump tweets come from archive, so column names are different
         df.rename(columns={'source': 'Source', 'text': 'Tweets', 'created_at': 'Date', 'retweet_count': 'RTs',
                            'is_retweet': 'isRT', 'favorite_count': 'Favourites'}, inplace=True)
+        df['replying_to_status_id'] = None  # create column for this attribute (missing in Trump tweets)
+
 
     # -- remove retweets --
     df['isRT'] = df.copy()['Tweets'].str.startswith('RT')  # label RTs (true/false)
 
     if remove_rts:
         df = df.loc[df['isRT'] == False].copy()  # keep only non-retweets
+        # also remove replies (unless reply to self)
+        df = df.loc[df['in_reply_to_user_id'] is None or df['user_id'] == df['in_reply_to_user_id']].copy()
 
     num_rts = num_tweets_read - df.shape[0]  # (number of tweets read) - (number remaining after removing RTs)
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +

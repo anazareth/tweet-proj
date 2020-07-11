@@ -63,6 +63,8 @@ def get_word_freq(df):
         for period in period_list:  # get top words from each month, create df
             period_abbr = period.lower()[0:3]  # first three letters of lowercase month (quarter unaffected)
             prd_tweets = df.loc[df[partition_method] == period]['TweetsTokenized']  # tweets from specific month
+            print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
+                  str(len(prd_tweets)) + ' tweets from @' + username + ' in ' + period)
             words = pd.Series(np.concatenate([tt for tt in prd_tweets])).value_counts()[0:100]
             keyword_freq['kw_'+period_abbr] = words.index
             keyword_freq['freq_'+period_abbr] = words.values
