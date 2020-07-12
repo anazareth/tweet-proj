@@ -40,11 +40,13 @@ def format_cols(df):
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           str(num_tweets_read) + ' tweets read from file \'' + input_csv + '\'.')  # log message
 
-    if 'trump' in input_csv.lower():  # trump tweets come from archive, so column names are different
+    if username == 'realDonaldTrump' in input_csv.lower():  # trump tweets come from archive, so column names are different
         df.rename(columns={'source': 'Source', 'text': 'Tweets', 'created_at': 'Date', 'retweet_count': 'RTs',
                            'is_retweet': 'isRT', 'favorite_count': 'Favourites'}, inplace=True)
         df['replying_to_status_id'] = None  # create column for this attribute (missing in Trump tweets)
-
+        df['Username'] = username
+        df['user_id'] = 25073877
+        df['Length'] = np.array([len(t) for t in df['Tweets']])
 
     # -- remove retweets --
     df['isRT'] = df.copy()['Tweets'].str.startswith('RT')  # label RTs (true/false)
