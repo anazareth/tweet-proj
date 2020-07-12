@@ -51,8 +51,8 @@ def format_cols(df):
 
     if remove_rts:
         df = df.loc[df['isRT'] == False].copy()  # keep only non-retweets
-        # also remove replies (unless reply to self)
-        df = df.loc[df['in_reply_to_user_id'] is None or df['user_id'] == df['in_reply_to_user_id']].copy()
+        # # also remove replies (unless reply to self)
+        # df = df.loc[df['in_reply_to_user_id'] is None or df['user_id'] == df['in_reply_to_user_id']].copy()
 
     num_rts = num_tweets_read - df.shape[0]  # (number of tweets read) - (number remaining after removing RTs)
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
@@ -128,6 +128,7 @@ def my_detect(text):
         detected_lang = detect(text)
         return detected_lang
     except lang_detect_exception.LangDetectException:
+    # except:
         print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
               'default lang (' + default_lang + ') set for tweet: ' + text)
         return default_lang

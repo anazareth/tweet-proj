@@ -23,8 +23,7 @@ def main():
     # NOTE: tweet id (incrementing) is found in tweet url, advanced search is helpful for looking back
     start_id = sys.argv[2]  # tweet id at least start_id
     final_id = sys.argv[3]  # tweet id at most final_id
-    new_tweets = api.user_timeline(screen_name=target_username, since_id=start_id, max_id=final_id, count=1,
-                                   tweet_mode='extended')
+    new_tweets = api.user_timeline(screen_name=target_username, since_id=start_id, max_id=final_id, count=1, tweet_mode='extended')
     tweets = new_tweets
     final_id = tweets[-1].id - 1  # update final_id to be less than the oldest tweet collected (last in list)
 
@@ -48,6 +47,8 @@ def main():
     data_temp['RTs'] = np.array([tweet.retweet_count for tweet in tweets])
     data_temp['Username'] = target_username
     data_temp['id_str'] = np.array([tweet.id for tweet in tweets])
+    data_temp['in_reply_to_user_id'] = np.array([tweet.in_reply_to_user_id for tweet in tweets])
+    data_temp['user_id'] = np.array([tweet.user.id for tweet in tweets])
 
     data_temp.to_csv(out_file, index=False, encoding='utf-8')
 

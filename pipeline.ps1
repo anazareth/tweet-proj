@@ -1,4 +1,7 @@
 $username = $args[0]
+Write-Output '--------------------------------------------------------------------------------------'
+Write-Output "Beginning processing for $username"
+Write-Output '--------------------------------------------------------------------------------------'
 if ( $username -ne 'realDonaldTrump' ) {
 	# scraper doesn't work for donald trump, but everything else works
 	python scraper.py $username 1212268323691532289 1278078666942173184
