@@ -1,7 +1,5 @@
 import argparse
 import community as community_louvain
-import matplotlib.cm as cm
-import matplotlib.pyplot as plt
 import networkx as nx
 import pandas as pd
 import os
@@ -40,7 +38,7 @@ def main(args):
 def find_communities(network, file_name, username):
     # find most likely number of commnunities, since there is an element of randomness to the Louvain algorithm
     N = 100  # number of times to run Louvain
-    iter_tracking = {k: 0 for k in range(2, 25)}
+    iter_tracking = {k: 0 for k in range(2, 200)}
     for i in range(N):
         partition = community_louvain.best_partition(network, resolution=1.05)  # compute best partition
         num_partitions = max(partition.values()) + 1  # communities labelled 0 to k-1, where k is number of communities
@@ -54,6 +52,11 @@ def find_communities(network, file_name, username):
     pct_certain = iter_tracking.get(num_communities)/N
     print(dt.datetime.today().strftime('%b-%d-%Y %H:%M:%S EST - ') +
           'Found ' + str(num_communities) + ' communities in file \'' + file_name + '\' (' + str(pct_certain) + ').')
+    new_row = pd.DataFrame({'handle': username, 'period': file_name[-7:-4], 'num_communities': num_communities,
+                       'pct': pct_certain}, index=[0])
+    orig_df = pd.read_csv(r'meta\num_communities.csv')
+    new_df = orig_df.append(new_row, ignore_index=True)
+    new_df.to_csv(r'meta\num_communities.csv', index=False)
 
 
 if __name__ == '__main__':
