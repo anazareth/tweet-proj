@@ -6,6 +6,9 @@ if ( $username -ne 'realDonaldTrump' -and $username -notlike '*sample*' -and $us
 	# scraper doesn't work for donald trump, but everything else works
 	python scraper.py $username 1212268323691532289 1278078666942173184
 }
+else {
+	Write-Output('Bypassing scraper stage...')
+}
 if ( $username -eq 'realDonaldTrump' ) {
 	$ismtxt = 'trumpisms.txt'
 } elseif ( $username -eq 'JustinTrudeau' ) {
@@ -14,7 +17,12 @@ if ( $username -eq 'realDonaldTrump' ) {
 	$ismtxt = 'blankisms.txt'
 }
 Write-Output '--------------------------------------------------------------------------------------'
+if ($username -notlike '*sample*') {
 python clean_tweets.py data\$username'_raw.csv' 1 $username
+}
+else {
+	Write-Output('Bypassing clean_tweets stage...')
+}
 Write-Output '--------------------------------------------------------------------------------------'
 python keyword_analysis.py data\$username'_clean.csv' meta\$ismtxt meta\stopwords.txt $username
 Write-Output '--------------------------------------------------------------------------------------'
