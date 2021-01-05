@@ -4,16 +4,20 @@ Short Description: Get some metrics about keyword frequency by Twitter user and 
 
 __author__ = 'Alex Nazareth' 
 
+import os
 from numpy.lib.function_base import cov
 import pandas as pd
 from ast import literal_eval
 from collections import Counter
 
+YEAR = 2020
 
 # words_df cols: ['Tweets', 'Length', 'Date', 'Source', 'Favourites', 'RTs', 'Username', 'id_str', 'isRT', 'tco', 'Language', 'Month', 'TweetsTokenized']
-def main(words_df):
+def main(words_df, out_filename, username):
     month_range = ['MarToJun', 'March', 'April', 'May', 'June']
+    col_names = ['username','year','month','num_covid_mentions','num_words_total','num_covid_tweets','total_num_tweets']
     df_month_words = words_df[words_df['Month'].isin(month_range)]
+    new_df = pd.DataFrame(columns=col_names)
     for mth in month_range:
         if mth != 'MarToJun':
             df_month_words =  words_df[words_df['Month'] == mth]
@@ -22,6 +26,14 @@ def main(words_df):
         print('Covid was mentioned', num_covid_mentions, 'times by @' + username,'in', mth, 'out of', num_keywords, 'word mentions.')
         print('It was also mentioned in', num_covid_tweets, 'tweets out of', num_total_tweets, 'that month.')
         print('--')
+        new_row = pd.DataFrame(data=[[username, YEAR, mth, num_covid_mentions, num_keywords, num_covid_tweets, num_total_tweets]], columns=col_names)
+        new_df = new_df.append(new_row, ignore_index=True)
+    if os.path.exists(out_filename):  # append to existing data
+        existing_df = pd.read_csv(out_filename)
+        updated_df = existing_df.append(new_df, ignore_index=True)
+    else:
+        updated_df = new_df
+    updated_df.to_csv(out_filename, index=False)
 
 
 def get_metrics(df_mw):
@@ -43,7 +55,13 @@ def get_metrics(df_mw):
 
 
 if __name__=='__main__':
-    username = 'JustinTrudeau'  # TODO: input arg or some for loop
-    in_filename = 'data\\kw_ana\\' + username + '_tokenized.csv'
-    in_df = pd.read_csv(in_filename)
-    main(in_df)
+    out_filename = 'data\\covid\\monthly_covid_mentions.csv'  # append all data to this file
+    for fname in os.listdir('data\\kw_ana'):
+        if fname.endswith('_tokenized.csv') and 'sample' not in fname.lower():
+            username =  '_'.join(fname.split('_')[:-1])
+            in_filename = 'data\\kw_ana\\' + fname
+            in_df = pd.read_csv(in_filename)
+            main(in_df, out_filename, username)
+    # username = 'realDonaldTrump'
+    # in_df = pd.read_csv(in_filename)
+    # main(in_df, out_filename, username)
