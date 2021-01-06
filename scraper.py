@@ -59,7 +59,7 @@ def get_tokens():
     consumer_key = f.readline().rstrip("\n")
     consumer_secret = f.readline().rstrip("\n")
     access_token = f.readline().rstrip("\n")
-    access_secret = f.readline()
+    access_secret = f.readline().rstrip("\n")
     f.close()
     return consumer_key, consumer_secret, access_token, access_secret
 
