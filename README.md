@@ -1,6 +1,7 @@
 # tweet-proj
 
-twitter scraping and analysis. Basically my powershell script runs the following in order (each feeding off the output of the last). Initial input is Twitter username and date range, final output is adjacency matrices of top 100 keywords for each month Jan-Jun. Other files are generated along the way, such as "clean" tweets. May be difficult to run on other machines as file structure and naming convention is somewhat specific.
+## About
+My powershell script runs the following Python scripts in order (each feeding off the output of the last). Initial input is Twitter username and date range, final output is adjacency matrices of top 100 keywords for each month. Other files are generated along the way, such as "clean" tweets.
  
 scraper.py - connect to Twitter API (using my secret credentials) and pull a range of tweets (by tweet id) from
 		a specified user; output CSV with metadata eg. 'tweet_out//trudeau_raw.csv'
