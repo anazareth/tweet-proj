@@ -3,7 +3,7 @@
 ## About
 My powershell script runs the following Python scripts in order (each feeding off the output of the last). Initial input is Twitter username and date range, final output is adjacency matrices of top 100 keywords for each month. Other files are generated along the way, such as "clean" tweets.
  
-scraper.py - connect to Twitter API (using my secret credentials) and pull a range of tweets (by tweet id) from
+**scraper.py** - connect to Twitter API (using my secret credentials) and pull a range of tweets (by tweet id) from
 		a specified user; output CSV with metadata eg. 'tweet_out//trudeau_raw.csv'
 		USAGE:
 		python scraper.py username start_id end_id
@@ -11,7 +11,7 @@ scraper.py - connect to Twitter API (using my secret credentials) and pull a ran
 			--start_id (int) - tweet id (found in URL) of earliest tweet desired
 			--end_id (int) - tweet id (found in URL) of final tweet desired
 		
-clean_tweets.py - input raw data from output csv from scraper.py (or trump archive);
+**clean_tweets.py** - input raw data from output csv from scraper.py (or trump archive);
 		drop french tweets and RTs (optional);
 		save to CSV with columns: Tweets, Length, Date, Source, Favourites, RTs, Language, isRT, Month
 		eg. 'data//JustinTrudeau_clean.csv'
@@ -22,7 +22,7 @@ clean_tweets.py - input raw data from output csv from scraper.py (or trump archi
 			--username (str) - name of target for output file: realDonaldTrump or JustinTrudeau, others in future
 
 
-keyword_analysis.py - input csv generated from clean_tweets.py; remove stopwords, find common phrases;
+**keyword_analysis.py** - input csv generated from clean_tweets.py; remove stopwords, find common phrases;
 		get frequency of words by month and user; 
 		output kws to csv eg. 'data//JustinTrudeau_words.csv';
 		output df with tokenized tweets column to csv eg. 'data//JustinTrudeau_tokenized.csv';
@@ -33,7 +33,7 @@ keyword_analysis.py - input csv generated from clean_tweets.py; remove stopwords
 			--ism_txt (str) - text file with dict of multi word phrases associated with user
 			--username (str) - name of target for output file
 		
-adj_matrices.py - input df with tokenized column eg. 'data//JustinTrudeau_tokenized.csv';
+**adj_matrices.py** - input df with tokenized column eg. 'data//JustinTrudeau_tokenized.csv';
 		create adjacency matrix for each month and all months, output csv files
 		eg. 'data//kw_ana//JustinTrudeau_adjmat_may.csv'
 		USAGE:
