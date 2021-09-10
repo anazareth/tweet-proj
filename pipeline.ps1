@@ -4,7 +4,8 @@ Write-Output "Beginning processing for $username"
 Write-Output '--------------------------------------------------------------------------------------'
 if ( $username -ne 'realDonaldTrump' -and $username -notlike '*sample*' -and $username -notlike '*random*' ) {
 	# scraper doesn't work for donald trump, but everything else works
-	python scraper.py $username 1212268323691532289 1278078666942173184
+	#python scraper.py $username 1212268323691532289 1278078666942173184
+	python scraper.py $username 1234131113737695232 1344872919965573120
 }
 else {
 	Write-Output('Bypassing scraper stage...')

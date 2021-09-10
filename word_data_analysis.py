@@ -14,12 +14,15 @@ YEAR = 2020
 
 # words_df cols: ['Tweets', 'Length', 'Date', 'Source', 'Favourites', 'RTs', 'Username', 'id_str', 'isRT', 'tco', 'Language', 'Month', 'TweetsTokenized']
 def main(words_df, out_filename, username):
-    month_range = ['MarToJun', 'March', 'April', 'May', 'June']
-    col_names = ['username','year','month','num_covid_mentions','num_words_total','num_covid_tweets','total_num_tweets']
+    # month_range = ['MarToJun', 'March', 'April', 'May', 'June']:
+    month_range = ['Y2020', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+                   'September', 'October', 'November', 'December']
+    col_names = ['username', 'year', 'month', 'num_covid_mentions',
+                 'num_words_total', 'num_covid_tweets', 'total_num_tweets']
     df_month_words = words_df[words_df['Month'].isin(month_range)]
     new_df = pd.DataFrame(columns=col_names)
     for mth in month_range:
-        if mth != 'MarToJun':
+        if mth != 'Y2020':
             df_month_words =  words_df[words_df['Month'] == mth]
         covid_freq, all_kw_freq, num_covid_tweets, num_total_tweets = get_metrics(df_month_words)
         num_covid_mentions, num_keywords, = sum(covid_freq), sum(all_kw_freq)
@@ -55,11 +58,15 @@ def get_metrics(df_mw):
 
 
 if __name__=='__main__':
-    out_filename = 'data\\covid\\monthly_covid_mentions.csv'  # append all data to this file
-    for fname in os.listdir('data\\kw_ana'):
+    #  original, before Linda
+    # out_filename = 'data\\covid\\monthly_covid_mentions.csv'  # append all data to this file
+    # search_dir = 'data\\kw_ana'
+    out_filename = 'data\\covid\\monthly_covid_mentions_v2.csv'  # append all data to this file
+    search_dir = 'data\\kw_ana\\linda_govs'
+    for fname in os.listdir(search_dir):  # full year of governor data from Linda
         if fname.endswith('_tokenized.csv') and 'sample' not in fname.lower():
             username =  '_'.join(fname.split('_')[:-1])
-            in_filename = 'data\\kw_ana\\' + fname
+            in_filename = search_dir + '\\' + fname
             in_df = pd.read_csv(in_filename)
             main(in_df, out_filename, username)
     # username = 'realDonaldTrump'
