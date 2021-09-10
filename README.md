@@ -41,3 +41,6 @@ My powershell script runs the following Python scripts in order (each feeding of
 		--input_csv (str) - name of csv file (and path if necessary)
 		--input_words (str) - csv file with monthly top100 words
 		--username (str) - name of target for output file
+		
+## Other
+**word_data_analysis.py** - calculate frequency of covid mentions in tweets of governors
