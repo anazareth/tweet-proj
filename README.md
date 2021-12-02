@@ -1,6 +1,9 @@
 # tweet-proj
 
 ## About
+
+This is the code used to gather Tweets from 700+ political American and Canadian political figures over 2020 for my MSc thesis, successfully defended August, 2021. Processing of the data involved removing retweets, non-english tweets, and non-text tweets. Data analysis was done through creation of 100x100 keyword networks for each politician in a given month, and running the Louvain community detection algorithm. We also wrote and presented a paper on the subject which was accepted to Complex Networks 2021, read here: https://arxiv.org/abs/2108.13259.
+
 My powershell script runs the following Python scripts in order (each feeding off the output of the last). Initial input is Twitter username and date range, final output is adjacency matrices of top 100 keywords for each month. Other files are generated along the way, such as "clean" tweets.
  
 **scraper.py** - connect to Twitter API (using my secret credentials) and pull a range of tweets (by tweet id) from
